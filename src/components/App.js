@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
+import styles from './App.module.css';
 
 export default class App extends Component {
   state = {
@@ -21,7 +22,7 @@ export default class App extends Component {
     }));
   };
 
-  getContacts = () => {
+  addContacts = () => {
     const { contacts } = this.state;
     return contacts.map(contact => contact.name.toLowerCase());
   };
@@ -39,23 +40,25 @@ export default class App extends Component {
     this.setState({ filter: event.currentTarget.value });
   };
 
-  deleteContact = id => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== id),
-    }));
+  deleteContact = contactId => {
+    this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(({ id }) => id !== contactId),
+      };
+    });
   };
 
   render() {
     const { filter } = this.state;
     return (
-      <div className={style.box}>
+      <div className={styles.box}>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.formSubmitHandler} />
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
         <ContactList
           contacts={this.getFilteredContacts()}
-          deleteContact={this.deleteeContact}
+          deleteContact={this.deleteContact}
         />
       </div>
     );

@@ -1,0 +1,17 @@
+.ContactForm {
+  width: 400px;
+  font-size: 18px;
+  padding: 12px 20px;
+  border: 2px solid #eee;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+}
+
+.label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.input {
+  display: block;
+  margin-bottom: 15px;
+}
