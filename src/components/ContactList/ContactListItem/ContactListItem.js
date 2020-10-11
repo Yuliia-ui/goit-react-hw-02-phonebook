@@ -2,24 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../ContactListItem/ContactListItem.module.css';
 
-const ContactListItem = ({ contact, deleteContact }) => (
-  <>
-    <p>{contact.name}:</p>
-    <p>{contact.number}</p>
-    <section className={styles.section}>
-      <button type="button" onClick={() => deleteContact(contact.id)}>
-        Delete
-      </button>
-    </section>
-  </>
-);
+const ContactListItem = ({ name, id, number, deleteContact }) => {
+  return (
+    <li key={id} className={styles.listItem}>
+      <p>{name}:</p>
+      <p>{number}</p>
+      <section className={styles.section}>
+        <button type="button" onClick={deleteContact}>
+          Delete
+        </button>
+      </section>
+    </li>
+  );
+};
 
 ContactListItem.propTypes = {
-  contact: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  }).isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
   deleteContact: PropTypes.func.isRequired,
 };
 

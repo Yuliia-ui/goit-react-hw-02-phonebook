@@ -5,20 +5,24 @@ import styles from '../ContactList/ContactList.module.css';
 
 const ContactList = ({ contacts, deleteContact }) => (
   <ul className={styles.list}>
-    {contacts.map(contact => (
-      <li className={styles.listItem} key={contact.id}>
-        <ContactListItem contact={contact} deleteContact={deleteContact} />
-      </li>
+    {contacts.map(({ id, ...prop }) => (
+      <ContactListItem
+        key={id}
+        {...prop}
+        deleteContact={() => deleteContact(id)}
+      />
     ))}
   </ul>
 );
+
 ContactList.propTypes = {
-  deleteContact: PropTypes.func.isRequired,
   contacts: PropTypes.arrayOf(
-    PropTypes.shape({
+    PropTypes.exact({
       id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
 };
 
 export default ContactList;

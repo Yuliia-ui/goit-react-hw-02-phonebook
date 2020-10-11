@@ -16,28 +16,37 @@ export default class App extends Component {
     filter: '',
   };
 
-  formSubmitHandler = contact => {
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, { id: uuidv4(), ...contact }],
-    }));
-  };
+  addContact = (name, number) => {
+    const contact = {
+      id: uuidv4(),
+      name,
+      number,
+    };
 
-  addContacts = () => {
-    const { contacts } = this.state;
-    return contacts.map(contact => contact.name.toLowerCase());
-  };
-
-  getFilteredContacts = () => {
-    const { filter, contacts } = this.state;
-    const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter),
+    const names = this.state.contacts.map(contact =>
+      contact.name.toLowerCase(),
     );
+
+    if (names.includes(contact.name.toLowerCase().trim())) {
+      alert(`${contact.name} is already in contacts`);
+    } else {
+      this.setState(prevState => {
+        return {
+          contacts: [...prevState.contacts, contact],
+        };
+      });
+    }
   };
 
-  changeFilter = event => {
-    this.setState({ filter: event.currentTarget.value });
+  changeFilter = filter => {
+    this.setState({ filter: filter.currentTarget.value });
+  };
+
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contacts =>
+      contacts.name.toLowerCase().includes(filter.toLowerCase()),
+    );
   };
 
   deleteContact = contactId => {
@@ -50,14 +59,17 @@ export default class App extends Component {
 
   render() {
     const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
     return (
       <div className={styles.box}>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.formSubmitHandler} />
+        <ContactForm onAddContact={this.addContact} />
         <h2>Contacts</h2>
-        <Filter value={filter} onChange={this.changeFilter} />
+        {visibleContacts.length > 0 && (
+          <Filter value={filter} onChange={this.changeFilter} />
+        )}
         <ContactList
-          contacts={this.getFilteredContacts()}
+          contacts={visibleContacts}
           deleteContact={this.deleteContact}
         />
       </div>
